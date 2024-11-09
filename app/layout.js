@@ -1,5 +1,12 @@
 import "./globals.css";
 import Header from "@/app/components/Header";
+import { DM_Sans } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+
+export const DMSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -9,9 +16,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={`antialiased`}>
-        <Header />
-        {children}
+      <body className={`${DMSans.className}`}>
+        <SessionProvider>
+          <Header />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
