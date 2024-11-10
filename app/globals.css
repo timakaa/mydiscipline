@@ -2,16 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  @apply bg-base-100 min-h-screen;
+}
+
 @layer components {
   .btn {
     @apply rounded-lg min-h-6 h-auto;
   }
 
+  .btn-ghost {
+    @apply hover:bg-ghost-hover hover:text-ghost-hover-text;
+  }
+
   .btn-simple {
-    @apply border-[1px] border-neutral-content/10 bg-base-300 hover:bg-base-300 hover:border-neutral-content/10;
+    @apply border-[1px] border-base-content/10 bg-simple hover:!bg-simple shadow-md hover:bg-base-300 hover:border-base-content/10;
   }
 
   .btn-primary {
     @apply bg-primary border-none hover:bg-primary-hover hover:text-white hover:shadow-lg hover:border-none text-white;
+  }
+
+  .toggle {
+    @apply rounded-full;
+  }
+
+  .select {
+    @apply rounded-xl;
+  }
+
+  .input {
+    @apply rounded-xl;
   }
 }

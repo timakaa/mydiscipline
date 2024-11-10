@@ -1,37 +1,29 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
-export function useClickAway({ func, refs, container, mode }) {
-  if (typeof window === "undefined") return;
-  mode ? mode : (mode = "mousedown");
-  container ? container : (container = window);
-  const handleClickAway = (event) => {
-    const isClickedAway = refs.every(
-      (ref) => ref.current && !ref.current.contains(event.target),
-    );
-    if (isClickedAway) {
-      func();
-    }
-  };
-
+export function useClickAway({ func, refs, container, mode = "mousedown" }) {
   useEffect(() => {
-    const containerCurrent = container.current;
+    const handleClickAway = (event) => {
+      const isClickedAway = refs.every(
+        (ref) => ref.current && !ref.current.contains(event.target),
+      );
+      if (isClickedAway) {
+        func();
+      }
+    };
 
-    if (containerCurrent) {
-      containerCurrent.addEventListener(mode, handleClickAway);
+    // Use window as default container only on client side
+    const targetContainer =
+      container?.current ||
+      container ||
+      (typeof window !== "undefined" ? window : null);
+
+    if (typeof window !== "undefined" && targetContainer) {
+      targetContainer.addEventListener(mode, handleClickAway);
       return () => {
-        if (containerCurrent) {
-          containerCurrent.removeEventListener(mode, handleClickAway);
-        }
+        targetContainer.removeEventListener(mode, handleClickAway);
       };
     }
-
-    if (container) {
-      container.addEventListener(mode, handleClickAway);
-      return () => {
-        container.removeEventListener(mode, handleClickAway);
-      };
-    }
-  }, [refs, func, container, handleClickAway, mode]);
+  }, [refs, func, container, mode]);
 }

@@ -6,9 +6,9 @@ const SwitchTheme = () => {
   const [theme, setTheme] = useState("");
   const handleThemeChange = (e) => {
     if (e.target.checked) {
-      localStorage.setItem("theme", "cmyk");
-      setTheme("cmyk");
-      document.documentElement.setAttribute("data-theme", "cmyk");
+      localStorage.setItem("theme", "lofi");
+      setTheme("lofi");
+      document.documentElement.setAttribute("data-theme", "lofi");
     } else {
       localStorage.setItem("theme", "business");
       setTheme("business");
@@ -30,7 +30,7 @@ const SwitchTheme = () => {
       <input
         type='checkbox'
         onChange={handleThemeChange}
-        checked={theme === "cmyk"}
+        checked={theme === "lofi"}
       />
 
       {/* sun icon */}

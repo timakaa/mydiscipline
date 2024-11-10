@@ -57,7 +57,7 @@ const UserMenu = () => {
                 className='relative z-50'
               >
                 <div className='absolute right-0 z-50 mt-3 w-screen max-w-[12rem] transform select-none'>
-                  <div className='overflow-hidden rounded-xl border border-base-content/5 bg-base-100 text-sm shadow-xl'>
+                  <div className='overflow-hidden rounded-xl border border-base-content/10 bg-base-100 text-sm shadow-xl'>
                     <div className='p-1 flex flex-col gap-y-1'>
                       <Link
                         href='/discipline'
@@ -80,7 +80,7 @@ const UserMenu = () => {
                           setIsOpen(false);
                           await signOut();
                         }}
-                        className='btn btn-ghost btn-sm w-full flex justify-start hover:bg-red-600/20 hover:text-red-700/50 py-2'
+                        className='btn btn-ghost btn-sm w-full flex justify-start hover:bg-red-600/40 hover:text-red-500 py-2'
                       >
                         <LogOut size={16} />
                         <div className='text-xs'>Logout</div>
