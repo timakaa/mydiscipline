@@ -1,6 +1,7 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer } from "recharts";
+import MiniChart from "./ui/MiniChart";
+import { ResponsiveContainer } from "recharts";
 import { useChartsStore } from "@/app/store/charts.store";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
@@ -45,7 +46,7 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-card border !w-full shadow-sm hover:drop-shadow-lg border-base-content/10 rounded-xl p-4 
+      className={`!w-full h-full shadow-sm hover:drop-shadow-lg rounded-xl
         ${isOrderingEnabled ? "cursor-grab active:cursor-grabbing" : ""}
         ${isDragging ? "opacity-90" : ""}`}
     >
@@ -56,7 +57,7 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
 
 const CompactCharts = () => {
   const { changeOrder } = useChartsStore();
-  const [chartItems, setChartItems] = useState([0, 1, 2, 3]);
+  const [chartItems, setChartItems] = useState([0, 1, 2, 3, 4, 5, 6, 7]);
 
   const chartsData = useMemo(() => {
     return chartItems.map(() => moneyChartData());
@@ -77,48 +78,19 @@ const CompactCharts = () => {
   };
 
   const ChartBlock = ({ dataIndex }) => (
-    <ResponsiveContainer
-      width='100%'
-      height={100}
-      className='pointer-events-none'
-    >
-      <AreaChart data={chartsData[dataIndex]}>
-        <defs>
-          <linearGradient id='colorUv2' x1='0' y1='0' x2='0' y2='1'>
-            <stop offset='0%' stopColor='#ff3737' stopOpacity={0.3} />
-            <stop offset='80%' stopColor='#ff3737' stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id='colorUv1' x1='0' y1='0' x2='0' y2='1'>
-            <stop offset='0%' stopColor='#3794FF' stopOpacity={0.3} />
-            <stop offset='80%' stopColor='#3794FF' stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <CartesianGrid
-          strokeDasharray='3 3'
-          strokeWidth={2}
-          horizontal={false}
-          vertical={false}
-        />
-        <Area
-          type='monotone'
-          dataKey='max'
-          stroke='#ff3737'
-          strokeWidth={3}
-          fillOpacity={1}
-          fill='url(#colorUv2)'
-          isAnimationActive={false}
-        />
-        <Area
-          type='monotone'
-          dataKey='actual'
-          stroke='#3794FF'
-          strokeWidth={3}
-          fillOpacity={1}
-          fill='url(#colorUv1)'
-          isAnimationActive={false}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <MiniChart
+      chart={{
+        data: chartsData[dataIndex],
+        globalSettings: {
+          title: "Test",
+          lines: [{ name: "max", color: "#f59e0b" }],
+        },
+        miniChartSettings: {
+          type: "monotone",
+        },
+      }}
+      animationActive={false}
+    />
   );
 
   return (

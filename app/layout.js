@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@/app/components/Header";
 import { DM_Sans } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import "react-day-picker/style.css";
 
 export const DMSans = DM_Sans({
   subsets: ["latin"],

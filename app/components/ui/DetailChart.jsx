@@ -13,6 +13,11 @@ import { useState, useEffect } from "react";
 
 const DetailChart = ({ chart, animationActive = true }) => {
   const [marginLeft, setMarginLeft] = useState(10);
+  const maxValue = Math.max(
+    ...chart.data.flatMap((item) =>
+      chart.globalSettings.lines.map((line) => item[line.name] || 0),
+    ),
+  );
 
   useEffect(() => {
     switch (chart.globalSettings.tooltipFormatter) {
@@ -26,6 +31,9 @@ const DetailChart = ({ chart, animationActive = true }) => {
         setMarginLeft(10);
     }
   }, [chart.globalSettings.tooltipFormatter]);
+
+  // Group data points by month for X-axis
+  const monthLabels = [...new Set(chart.data.map((item) => item.name))];
 
   return (
     <div className='bg-card border shadow-sm hover:drop-shadow-lg duration-200 border-base-content/10 rounded-xl p-4 pt-6 flex flex-col items-center'>
@@ -69,13 +77,14 @@ const DetailChart = ({ chart, animationActive = true }) => {
             strokeWidth={2}
             angle={-45}
             textAnchor='end'
-            interval={"auto"}
+            interval='preserveStartEnd'
             tick={{
               fontSize: 12,
               dy: 20,
               fontWeight: "bold",
             }}
             height={60}
+            ticks={monthLabels}
           />
           <YAxis
             strokeWidth={2}
@@ -83,16 +92,26 @@ const DetailChart = ({ chart, animationActive = true }) => {
               fontSize: 12,
               fontWeight: "bold",
             }}
-            domain={[0, "auto"]}
-            tickFormatter={formatters[chart.globalSettings.tooltipFormatter]}
+            domain={[0, maxValue * 2]}
             allowDataOverflow={false}
+            ticks={[
+              0,
+              Math.round((maxValue * 0.5) / 10) * 10,
+              Math.round((maxValue * 1) / 10) * 10,
+              Math.round((maxValue * 1.5) / 10) * 10,
+              Math.round((maxValue * 2) / 10) * 10,
+            ]}
+            interval='preserveEnd'
+            tickFormatter={formatters[chart.globalSettings.tooltipFormatter]}
           />
           <Tooltip
             content={({ payload, label }) => {
               if (payload && payload.length) {
                 return (
                   <div className='bg-card rounded-lg border-neutral-500/30 p-4 border-[1px]'>
-                    <div className='text-sm font-bold'>{label}</div>
+                    <div className='text-sm font-bold'>
+                      {payload[0]?.payload.fullDate}
+                    </div>
                     {payload.map((entry, index) => (
                       <div key={index}>
                         <span>{entry.name}:</span>{" "}

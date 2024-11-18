@@ -59,7 +59,7 @@ const Hero = async () => {
               href={session?.user ? "/discipline" : "/api/auth/signin"}
               className='btn text-lg font-medium tracking-wide mt-10 py-2 px-20 btn-primary'
             >
-              Do duty without excuses
+              Do your duty without excuses
             </Link>
           </div>
           <div className='text-center text-neutral-500 mt-1 tracking-wide text-sm'>

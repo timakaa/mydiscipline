@@ -13,7 +13,7 @@ const GlobalChartSettings = ({
   return (
     <div>
       <div className='text-xl font-bold mb-4'>Global Settings</div>
-      <div className='flex flex-col gap-y-4 items-center'>
+      <div className='flex flex-col gap-y-4'>
         <div className='flex flex-col items-start'>
           <div className='text-base font-semibold mb-1'>Title</div>
           <input

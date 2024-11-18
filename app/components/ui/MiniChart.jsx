@@ -1,8 +1,20 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  YAxis,
+} from "recharts";
 
 const MiniChart = ({ chart, animationActive = true }) => {
+  const maxValue = Math.max(
+    ...chart.data.flatMap((item) =>
+      chart.globalSettings.lines.map((line) => item[line.name] || 0),
+    ),
+  );
+
   return (
     <div
       className={`bg-card border hover:drop-shadow-lg duration-200 border-base-content/10 rounded-xl p-4 mx-auto`}
@@ -35,6 +47,7 @@ const MiniChart = ({ chart, animationActive = true }) => {
             horizontal={false}
             vertical={false}
           />
+          <YAxis hide domain={[0, maxValue * 1.5]} />
           {chart.globalSettings.lines.map((line, index) => (
             <Area
               key={index}

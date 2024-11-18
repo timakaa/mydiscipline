@@ -27,7 +27,6 @@ const CreateChartForm = () => {
     handleLineAdd,
     handleTooltipFormatterChange,
     data,
-    // setData,
   } = useCreateChart();
 
   return (
@@ -61,27 +60,29 @@ const CreateChartForm = () => {
           />
         </div>
       </div>
-      <div className='mt-10 grid grid-cols-2 place-items-center items-start'>
+      <div className='mt-10 grid grid-cols-1 gap-20 lg:grid-cols-2 max-w-full px-2 lg:px-32'>
         <ChartDataSettings />
-        <GlobalChartSettings
-          globalSettings={globalSettings}
-          setGlobalSettings={setGlobalSettings}
-          handleLineChange={handleLineChange}
-          handleLineColorChange={handleLineColorChange}
-          handleLineRemove={handleLineRemove}
-          handleLineAdd={handleLineAdd}
-          handleTooltipFormatterChange={handleTooltipFormatterChange}
-        />
-      </div>
-      <div className='grid grid-cols-2 place-items-center items-start mt-10 w-full'>
+        <div className='lg:justify-self-end'>
+          <GlobalChartSettings
+            globalSettings={globalSettings}
+            setGlobalSettings={setGlobalSettings}
+            handleLineChange={handleLineChange}
+            handleLineColorChange={handleLineColorChange}
+            handleLineRemove={handleLineRemove}
+            handleLineAdd={handleLineAdd}
+            handleTooltipFormatterChange={handleTooltipFormatterChange}
+          />
+        </div>
         <DetailChartSettings
           chartSettings={chartSettings}
           setChartSettings={setChartSettings}
         />
-        <MiniChartSettings
-          miniChartSettings={miniChartSettings}
-          setMiniChartSettings={setMiniChartSettings}
-        />
+        <div className='lg:justify-self-end'>
+          <MiniChartSettings
+            miniChartSettings={miniChartSettings}
+            setMiniChartSettings={setMiniChartSettings}
+          />
+        </div>
       </div>
     </>
   );

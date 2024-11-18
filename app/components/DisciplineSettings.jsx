@@ -40,7 +40,7 @@ const DisciplineSettings = () => {
       <div className='flex items-center gap-x-2'>
         <button
           disabled={!details}
-          className={`btn-ghost border hidden md:block border-neutral-500/50 btn-sm py-1 px-1 btn ${
+          className={`btn-simple hidden md:block py-1 px-1 btn ${
             split ? "text-primary-hover" : ""
           }`}
           onClick={() => setSplit(!split)}
@@ -49,7 +49,7 @@ const DisciplineSettings = () => {
         </button>
         <button
           disabled={details}
-          className={`btn-ghost border border-neutral-500/50 btn-sm ${
+          className={`btn-simple ${
             changeOrder ? "text-primary-hover" : ""
           } py-1 px-1 btn`}
           onClick={() => setChangeOrder(!changeOrder)}
