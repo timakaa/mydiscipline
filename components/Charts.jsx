@@ -2,7 +2,7 @@
 
 import CompactCharts from "./CompactCharts";
 import FullscreenCharts from "./FullscreenCharts";
-import { useChartsStore } from "@/app/store/charts.store";
+import { useChartsStore } from "@/store/charts.store";
 
 const Charts = () => {
   const { details } = useChartsStore();

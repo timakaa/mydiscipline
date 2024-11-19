@@ -1,19 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { useChartsStore } from "@/app/store/charts.store";
-import { moneyChartData } from "@/app/mocks/data";
+import { useChartsStore } from "@/store/charts.store";
+import { moneyChartData } from "@/mocks/data";
 import DetailChart from "./ui/DetailChart";
-import { formatDollar } from "@/app/lib/chartTooltipFormatters";
 
 const FullscreenCharts = () => {
   const { split } = useChartsStore();

@@ -1,5 +1,5 @@
-import CreateChartForm from "@/app/components/CreateChartForm";
-import getSession from "@/app/lib/getSession";
+import CreateChartForm from "@/components/CreateChartForm";
+import getSession from "@/lib/getSession";
 import { redirect } from "next/navigation";
 
 const CreateChart = async () => {

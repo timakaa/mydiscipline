@@ -1,4 +1,4 @@
-import getSession from "@/app/lib/getSession";
+import getSession from "@/lib/getSession";
 import CheckIcon from "./CheckIcon";
 import Link from "next/link";
 

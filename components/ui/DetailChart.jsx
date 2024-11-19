@@ -9,7 +9,7 @@ import {
   YAxis,
   Brush,
 } from "recharts";
-import { formatters } from "@/app/lib/chartTooltipFormatters";
+import { formatters } from "@/lib/chartTooltipFormatters";
 import { useState, useEffect } from "react";
 
 const DetailChart = ({ chart, animationActive = true }) => {

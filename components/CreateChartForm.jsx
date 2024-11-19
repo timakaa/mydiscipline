@@ -1,8 +1,6 @@
 "use client";
 
 import GlobalChartSettings from "./GlobalChartSettings";
-import { moneyChartData } from "@/app/mocks/data";
-import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import DetailChart from "./ui/DetailChart";

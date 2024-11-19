@@ -1,7 +1,7 @@
 "use client";
 
 import { ListOrderedIcon, SquareSplitHorizontal, Plus } from "lucide-react";
-import { useChartsStore } from "@/app/store/charts.store";
+import { useChartsStore } from "@/store/charts.store";
 import { useEffect } from "react";
 import Link from "next/link";
 

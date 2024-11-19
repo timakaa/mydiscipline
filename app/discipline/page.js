@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import getSession from "@/app/lib/getSession";
-import Charts from "../components/Charts";
-import DisciplineSettings from "../components/DisciplineSettings";
+import getSession from "@/lib/getSession";
+import Charts from "@/components/Charts";
+import DisciplineSettings from "@/components/DisciplineSettings";
 
 const Discipline = async () => {
   const session = await getSession();

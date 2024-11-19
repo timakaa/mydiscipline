@@ -1,8 +1,7 @@
 "use client";
 
 import MiniChart from "./ui/MiniChart";
-import { ResponsiveContainer } from "recharts";
-import { useChartsStore } from "@/app/store/charts.store";
+import { useChartsStore } from "@/store/charts.store";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -12,7 +11,7 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
-import { moneyChartData } from "@/app/mocks/data";
+import { moneyChartData } from "@/mocks/data";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 const SortableItem = ({ id, children, isOrderingEnabled }) => {

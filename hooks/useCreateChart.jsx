@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { moneyChartData } from "@/app/mocks/data";
+import { moneyChartData } from "@/mocks/data";
 
 export default function useCreateChart() {
   const [lineKeys] = useState({
