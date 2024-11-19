@@ -67,14 +67,6 @@ const UserMenu = () => {
                         <InfiniteLogo className='text-amber-600 text-xl' />
                         <div className='text-xs'>Discipline</div>
                       </Link>
-                      <Link
-                        href='/settings'
-                        onClick={() => setIsOpen(false)}
-                        className='btn btn-ghost btn-sm w-full flex justify-start py-2'
-                      >
-                        <Settings size={16} />
-                        <div className='text-xs'>Settings</div>
-                      </Link>
                       <button
                         onClick={async () => {
                           setIsOpen(false);

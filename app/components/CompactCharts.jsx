@@ -13,6 +13,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { moneyChartData } from "@/app/mocks/data";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 const SortableItem = ({ id, children, isOrderingEnabled }) => {
   const {
@@ -83,7 +84,11 @@ const CompactCharts = () => {
         data: chartsData[dataIndex],
         globalSettings: {
           title: "Test",
-          lines: [{ name: "max", color: "#f59e0b" }],
+          lines: [
+            { id: "2", name: "Maximum", color: "#ff3737" },
+            { id: "1", name: "Actual", color: "#3794FF" },
+            { id: "3", name: null, color: "#379400" },
+          ],
         },
         miniChartSettings: {
           type: "monotone",
@@ -94,7 +99,11 @@ const CompactCharts = () => {
   );
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToParentElement]}
+    >
       <SortableContext
         items={chartItems.map(String)}
         strategy={rectSortingStrategy}

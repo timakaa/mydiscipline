@@ -48,6 +48,7 @@ const CreateChartForm = () => {
             chartSettings,
             data,
           }}
+          animationActive={false}
         />
       </div>
       <div className='flex justify-center'>
@@ -58,6 +59,7 @@ const CreateChartForm = () => {
               miniChartSettings,
               data,
             }}
+            animationActive={false}
           />
         </div>
       </div>

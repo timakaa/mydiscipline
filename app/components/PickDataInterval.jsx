@@ -3,6 +3,7 @@ import { useClickAway } from "../hooks/useClickAway";
 import { Calendar } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DayPicker } from "react-day-picker";
+import { formatDate } from "../lib/formatDate";
 
 const PickDataInterval = ({
   fromDate,
@@ -10,6 +11,7 @@ const PickDataInterval = ({
   toDate,
   setToDate,
   setIsPicked,
+  setData,
 }) => {
   const fromRef = useRef(null);
   const toRef = useRef(null);
@@ -64,6 +66,28 @@ const PickDataInterval = ({
         },
       };
     }
+  };
+
+  const data = () => {
+    const result = [];
+    let currentDate = new Date(fromDate);
+
+    while (currentDate <= toDate) {
+      const monthName = currentDate.toLocaleString("en-US", { month: "long" });
+      result.push({
+        name: monthName,
+        fullDate: formatDate(currentDate),
+        dateValue: currentDate.getTime(),
+        1: null,
+        2: null,
+        3: null,
+      });
+
+      // Move to next month
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return result;
   };
 
   return (
@@ -175,7 +199,7 @@ const PickDataInterval = ({
               if (!fromDate || !toDate) {
                 return;
               }
-
+              setData(data());
               setIsPicked(true);
             }}
             className='btn btn-primary py-2 px-8'

@@ -43,32 +43,36 @@ const GlobalChartSettings = ({
         <div>
           <div className='text-base font-semibold mb-1'>Lines</div>
           <div className='flex flex-col gap-y-2 max-w-xs w-screen'>
-            {globalSettings.lines.map((line, index) => (
-              <div key={index} className='flex items-center gap-x-2'>
-                <input
-                  type='text'
-                  value={line.name}
-                  onChange={(e) => handleLineChange(e, index)}
-                  className='input input-bordered w-full min-h-5 h-auto py-2'
-                />
-                <input
-                  type='color'
-                  value={line.color}
-                  onChange={(e) => handleLineColorChange(e, index)}
-                  className='btn py-4'
-                  style={{
-                    backgroundColor: line.color,
-                  }}
-                />
-                <button
-                  onClick={() => handleLineRemove(index)}
-                  className='btn text-white btn-error py-2'
-                >
-                  <Eraser />
-                </button>
-              </div>
-            ))}
-            {globalSettings.lines.length < 3 && (
+            {globalSettings.lines.map(
+              (line, index) =>
+                line.name !== null && (
+                  <div key={index} className='flex items-center gap-x-2'>
+                    <input
+                      type='text'
+                      value={line.name}
+                      onChange={(e) => handleLineChange(e, index)}
+                      className='input input-bordered w-full min-h-5 h-auto py-2'
+                    />
+                    <input
+                      type='color'
+                      value={line.color}
+                      onChange={(e) => handleLineColorChange(e, index)}
+                      className='btn py-4'
+                      style={{
+                        backgroundColor: line.color,
+                      }}
+                    />
+                    <button
+                      onClick={() => handleLineRemove(index)}
+                      className='btn text-white btn-error py-2'
+                    >
+                      <Eraser />
+                    </button>
+                  </div>
+                ),
+            )}
+            {globalSettings.lines.filter((line) => line.name !== null).length <
+              3 && (
               <div>
                 <button
                   onClick={() => handleLineAdd()}

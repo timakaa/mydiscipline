@@ -29,6 +29,8 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
     refs: [containerRef, buttonRef],
   });
 
+  console.log(data);
+
   return (
     <div>
       <div className='text-xl font-bold mb-4'>Data Settings</div>
@@ -90,30 +92,53 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
             </div>
             <div className='mt-6 flex flex-col gap-y-4'>
               {date &&
-                globalSettings.lines.map((line) => (
-                  <div key={line.name} className='flex items-center gap-x-2'>
-                    <span>{line.name}</span>
-                    <input
-                      type='text'
-                      className='input input-bordered'
-                      value={(() => {
-                        const day = data.find((day) => {
-                          const dayDate = new Date(day.dateValue);
+                globalSettings.lines.map(
+                  (line) =>
+                    line.name && (
+                      <div
+                        key={line.name}
+                        className='flex items-center gap-x-2'
+                      >
+                        <span>{line.name}</span>
+                        <input
+                          maxLength={7}
+                          type='text'
+                          className='input input-bordered'
+                          value={(() => {
+                            const day = data.find((day) => {
+                              const dayDate = new Date(day.dateValue);
+                              return (
+                                dayDate?.toLocaleDateString() ===
+                                date?.toLocaleDateString()
+                              );
+                            });
+                            return day?.[line.id] || "";
+                          })()}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (!/^\d*$/.test(value)) return;
 
-                          return (
-                            dayDate?.toLocaleDateString() ===
-                            date?.toLocaleDateString()
-                          );
-                        });
+                            setData((prevData) =>
+                              prevData.map((day) => {
+                                const dayDate = new Date(day.dateValue);
 
-                        return day?.[line.name] || "";
-                      })()}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                      }}
-                    />
-                  </div>
-                ))}
+                                if (
+                                  dayDate?.toLocaleDateString() ===
+                                  date?.toLocaleDateString()
+                                ) {
+                                  return {
+                                    ...day,
+                                    [line.id]: value ? Number(value) : null,
+                                  };
+                                }
+                                return day;
+                              }),
+                            );
+                          }}
+                        />
+                      </div>
+                    ),
+                )}
             </div>
           </div>
         ) : (
@@ -124,6 +149,7 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
               toDate={toDate}
               setToDate={setToDate}
               setIsPicked={setIsPicked}
+              setData={setData}
             />
           </div>
         )}
