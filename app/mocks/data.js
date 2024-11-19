@@ -20,15 +20,14 @@ export const moneyChartData = () => {
     } ${date.getDate()}, ${date.getFullYear()}`;
   };
 
-  // Get data for last 12 months including all days
   const data = [];
-  const endDate = new Date();
-  endDate.setDate(endDate.getDate() - 1);
+  const startDate = new Date(); // Start from today
+  startDate.setHours(0, 0, 0, 0); // Set to beginning of day
 
-  // Calculate start date: one year back from yesterday
-  const startDate = new Date(endDate);
-  startDate.setFullYear(endDate.getFullYear() - 1);
-  startDate.setDate(endDate.getDate() + 1);
+  // End date is one year from today minus one day
+  const endDate = new Date(startDate);
+  endDate.setFullYear(startDate.getFullYear() + 1);
+  endDate.setDate(endDate.getDate() - 1);
 
   let currentDate = new Date(startDate);
 
@@ -58,7 +57,6 @@ export const moneyChartData = () => {
       max: Math.round(baseMax),
     });
 
-    // Move to next day
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
