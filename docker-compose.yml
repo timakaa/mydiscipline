@@ -41,6 +41,7 @@ services:
         condition: service_healthy
     networks:
       - webnet
+      - reverse-proxy
 
   nginx:
     image: nginx:alpine
@@ -56,6 +57,7 @@ services:
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
       - reverse-proxy
+      - webnet
 
   certbot:
     image: certbot/certbot
