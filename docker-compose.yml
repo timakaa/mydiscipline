@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: timakaaliebe
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: mydiscipline
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U timakaaliebe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://timakaaliebe:test@localhost:5432/mydiscipline?schema=public
+      AUTH_SECRET: yOijBHKF591CV6IQpI2EQgETtnHuj7eZAwJcMAKsiwA=
+      AUTH_GOOGLE_ID: 834251276813-boleogcfq6ha1hpansm2epbkc8clio1p.apps.googleusercontent.com
+      AUTH_GOOGLE_SECRET: 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
+      EMAIL_SERVER_HOST: smtp.gmail.com
+      EMAIL_SERVER_PORT: 465
+      EMAIL_SERVER_USER: mydiscipline30@gmail.com
+      EMAIL_SERVER_PASSWORD: bzpp ivzn lijc kkam
+      EMAIL_FROM: "mydiscipline30@gmail.com"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

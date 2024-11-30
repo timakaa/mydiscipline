@@ -61,6 +61,9 @@ const CreateChartForm = () => {
           />
         </div>
       </div>
+      <div className='flex justify-center mt-6'>
+        <button className='btn btn-primary py-2 px-8 text-lg'>Create</button>
+      </div>
       <div className='mt-10 grid grid-cols-1 gap-20 lg:grid-cols-2 max-w-full px-2 lg:px-32'>
         <ChartDataSettings
           setData={setData}
