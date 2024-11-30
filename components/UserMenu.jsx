@@ -37,14 +37,18 @@ const UserMenu = () => {
             onClick={() => setIsOpen((prev) => !prev)}
             className='btn btn-ghost py-1 px-4 flex gap-x-2 items-center'
           >
-            <Image
-              src={session?.user?.image}
-              alt='user'
-              width={24}
-              height={24}
-              className='rounded-full'
-            />
-            {session?.user?.name}
+            {session?.user?.image ? (
+              <Image
+                src={session?.user?.image}
+                alt='user'
+                width={24}
+                height={24}
+                className='rounded-full'
+              />
+            ) : (
+              ""
+            )}
+            {session?.user?.name || session?.user?.email}
           </button>
           <AnimatePresence mode='wait'>
             {isOpen ? (
