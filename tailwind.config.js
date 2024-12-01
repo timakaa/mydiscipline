@@ -42,16 +42,6 @@ module.exports = {
           "--ghost-hover": "#cdcdcd33",
           "--ghost-hover-text": "var(--base-content)",
         },
-        cmyk: {
-          ...require("daisyui/src/theming/themes")["cmyk"],
-          "--primary": "#ffab00",
-          "--primary-hover": "#ffa000",
-          "--card": "#ffffff",
-          "--base-100": "#fbfafa",
-          "--simple": "#ffffff",
-          "--ghost-hover": "#000000",
-          "--ghost-hover-text": "#ffffff",
-        },
         lofi: {
           ...require("daisyui/src/theming/themes")["cmyk"],
           "--primary": "#ffab00",

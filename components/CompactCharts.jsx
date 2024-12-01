@@ -10,9 +10,10 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { moneyChartData } from "@/mocks/data";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
+import MiniChartSkeleton from "./ui/MiniChartSkeleton";
 
 const SortableItem = ({ id, children, isOrderingEnabled }) => {
   const {
@@ -46,9 +47,7 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`!w-full h-full shadow-sm hover:drop-shadow-lg rounded-xl
-        ${isOrderingEnabled ? "cursor-grab active:cursor-grabbing" : ""}
-        ${isDragging ? "opacity-90" : ""}`}
+      className={`h-full !w-full rounded-xl shadow-sm hover:drop-shadow-lg ${isOrderingEnabled ? "cursor-grab active:cursor-grabbing" : ""} ${isDragging ? "opacity-90" : ""}`}
     >
       {children}
     </div>
@@ -57,7 +56,14 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
 
 const CompactCharts = () => {
   const { changeOrder } = useChartsStore();
+  const [isLoading, setIsLoading] = useState(true);
   const [chartItems, setChartItems] = useState([0, 1, 2, 3, 4, 5, 6, 7]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   const chartsData = useMemo(() => {
     return chartItems.map(() => moneyChartData());
@@ -98,28 +104,34 @@ const CompactCharts = () => {
   );
 
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      modifiers={[restrictToParentElement]}
-    >
-      <SortableContext
-        items={chartItems.map(String)}
-        strategy={rectSortingStrategy}
-      >
-        <div className='grid grid-cols-3 relative w-full place-items-center gap-4 mt-20'>
-          {chartItems.map((item) => (
-            <SortableItem
-              key={item}
-              id={item.toString()}
-              isOrderingEnabled={changeOrder}
-            >
-              <ChartBlock dataIndex={item} />
-            </SortableItem>
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="mt-20">
+      {isLoading ? (
+        <MiniChartSkeleton />
+      ) : (
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToParentElement]}
+        >
+          <SortableContext
+            items={chartItems.map(String)}
+            strategy={rectSortingStrategy}
+          >
+            <div className="relative grid w-full grid-cols-3 place-items-center gap-4">
+              {chartItems.map((item) => (
+                <SortableItem
+                  key={item}
+                  id={item.toString()}
+                  isOrderingEnabled={changeOrder}
+                >
+                  <ChartBlock dataIndex={item} />
+                </SortableItem>
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      )}
+    </div>
   );
 };
 

@@ -7,21 +7,47 @@ import {
   ResponsiveContainer,
   YAxis,
 } from "recharts";
+import { useMemo } from "react";
 
 const MiniChart = ({ chart, animationActive = true }) => {
-  const lastIndexWithValue = chart.data.reduce((lastIndex, item, index) => {
-    const hasValue = chart.globalSettings.lines.some(
-      (line) => item[line.id || line.name] > 0,
+  const { trimmedData, maxValue } = useMemo(() => {
+    const lastIndex = chart.data.reduce((lastIndex, item, index) => {
+      const hasValue = chart.globalSettings.lines.some(
+        (line) => item[line.id || line.name] > 0,
+      );
+      return hasValue ? index : lastIndex;
+    }, -1);
+
+    const trimmed = chart.data.slice(0, lastIndex + 1);
+    const max = Math.max(
+      ...trimmed.flatMap((item) =>
+        chart.globalSettings.lines.map(
+          (line) => item[line.id || line.name] || 0,
+        ),
+      ),
     );
-    return hasValue ? index : lastIndex;
-  }, -1);
 
-  const trimmedData = chart.data.slice(0, lastIndexWithValue + 1);
+    return { trimmedData: trimmed, maxValue: max };
+  }, [chart.data, chart.globalSettings.lines]);
 
-  const maxValue = Math.max(
-    ...trimmedData.flatMap((item) =>
-      chart.globalSettings.lines.map((line) => item[line.id || line.name] || 0),
-    ),
+  const gradientDefs = useMemo(
+    () =>
+      chart.globalSettings.lines
+        .filter((line) => line.name !== null)
+        .map((line, index) => (
+          <linearGradient
+            key={index}
+            id={`colorUv${index + 1}`}
+            x1='0'
+            y1='0'
+            x2='0'
+            y2='1'
+          >
+            <stop offset='0%' stopColor={line.color} stopOpacity={0.3} />
+            <stop offset='80%' stopColor={line.color} stopOpacity={0} />
+          </linearGradient>
+        )),
+    [chart.globalSettings.lines],
   );
 
   return (
@@ -35,23 +61,7 @@ const MiniChart = ({ chart, animationActive = true }) => {
         className='pointer-events-none'
       >
         <AreaChart data={trimmedData}>
-          <defs>
-            {chart.globalSettings.lines
-              .filter((line) => line.name !== null)
-              .map((line, index) => (
-                <linearGradient
-                  key={index}
-                  id={`colorUv${index + 1}`}
-                  x1='0'
-                  y1='0'
-                  x2='0'
-                  y2='1'
-                >
-                  <stop offset='0%' stopColor={line.color} stopOpacity={0.3} />
-                  <stop offset='80%' stopColor={line.color} stopOpacity={0} />
-                </linearGradient>
-              ))}
-          </defs>
+          <defs>{gradientDefs}</defs>
           <CartesianGrid
             strokeDasharray='3 3'
             strokeWidth={2}

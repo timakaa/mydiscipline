@@ -1,7 +1,15 @@
 "use client";
 
 import CompactCharts from "./CompactCharts";
-import FullscreenCharts from "./FullscreenCharts";
+import MiniChartSkeleton from "./ui/MiniChartSkeleton";
+import dynamic from "next/dynamic";
+const FullscreenCharts = dynamic(() => import("./FullscreenCharts"), {
+  loading: () => (
+    <div className="mt-20">
+      <MiniChartSkeleton />
+    </div>
+  ),
+});
 import { useChartsStore } from "@/store/charts.store";
 
 const Charts = () => {

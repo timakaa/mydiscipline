@@ -10,54 +10,59 @@ import {
   Brush,
 } from "recharts";
 import { formatters } from "@/lib/chartTooltipFormatters";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const DetailChart = ({ chart, animationActive = true }) => {
-  const [marginLeft, setMarginLeft] = useState(20);
-  const [brushIndices, setBrushIndices] = useState({
-    startIndex: 0,
-    endIndex: Math.floor(chart.data.length * 0.4),
-  });
-
-  useEffect(() => {
-    setBrushIndices((prevIndices) => {
-      if (chart.data.length !== prevIndices.endIndex + 1) {
-        return {
-          startIndex: 0,
-          endIndex: Math.floor(chart.data.length * 0.99999999),
-        };
-      }
-      return prevIndices;
-    });
-  }, [chart.data.length]);
-
-  const maxValue = Math.max(
-    ...chart.data.flatMap((item) =>
-      chart.globalSettings.lines.map((line) => item[line.id || line.name] || 0),
-    ),
-  );
-
-  useEffect(() => {
+  const marginLeft = useMemo(() => {
     switch (chart.globalSettings.tooltipFormatter) {
       case "formatDollar":
-        setMarginLeft(30);
-        break;
       case "formatPercentage":
-        setMarginLeft(30);
-        break;
+        return 30;
       default:
-        setMarginLeft(20);
+        return 20;
     }
   }, [chart.globalSettings.tooltipFormatter]);
 
-  const monthLabels = [...new Set(chart.data.map((item) => item.name))];
+  const defaultBrushIndices = useMemo(
+    () => ({
+      startIndex: 0,
+      endIndex: Math.floor(chart.data.length * 0.99999999),
+    }),
+    [chart.data.length]
+  );
+
+  const [brushIndices, setBrushIndices] = useState(defaultBrushIndices);
+
+  const { maxValue, monthLabels } = useMemo(() => {
+    const max = Math.max(
+      ...chart.data.flatMap((item) =>
+        chart.globalSettings.lines.map(
+          (line) => item[line.id || line.name] || 0
+        )
+      )
+    );
+
+    const labels = [...new Set(chart.data.map((item) => item.name))];
+
+    return { maxValue: max, monthLabels: labels };
+  }, [chart.data, chart.globalSettings.lines]);
+
+  const yAxisTicks = useMemo(() => {
+    const roundedMax = Math.round((maxValue * 1.5) / 10) * 10;
+    return [
+      0,
+      Math.round((maxValue * 0.5) / 10) * 10,
+      Math.round(maxValue / 10) * 10,
+      roundedMax,
+    ];
+  }, [maxValue]);
 
   return (
-    <div className='bg-card border shadow-sm hover:drop-shadow-lg duration-200 border-base-content/10 rounded-xl pt-6 flex flex-col items-center'>
-      <div className='text-xl font-bold mb-4 text-center'>
+    <div className="flex flex-col items-center rounded-xl border border-base-content/10 bg-card pt-6 shadow-sm duration-200 hover:drop-shadow-lg">
+      <div className="mb-4 text-center text-xl font-bold">
         {chart.globalSettings.title}
       </div>
-      <ResponsiveContainer width='100%' height={400}>
+      <ResponsiveContainer width="100%" height={400}>
         <AreaChart
           data={chart.data}
           margin={{
@@ -74,27 +79,27 @@ const DetailChart = ({ chart, animationActive = true }) => {
                 <linearGradient
                   key={index}
                   id={`colorUv${index + 1}`}
-                  x1='0'
-                  y1='0'
-                  x2='0'
-                  y2='1'
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
                 >
-                  <stop offset='0%' stopColor={line.color} stopOpacity={0.3} />
-                  <stop offset='80%' stopColor={line.color} stopOpacity={0} />
+                  <stop offset="0%" stopColor={line.color} stopOpacity={0.3} />
+                  <stop offset="80%" stopColor={line.color} stopOpacity={0} />
                 </linearGradient>
               ))}
           </defs>
           <CartesianGrid
-            strokeDasharray='3 3'
+            strokeDasharray="3 3"
             strokeWidth={2}
             opacity={0.4}
             horizontal={chart.chartSettings.horizontal}
             vertical={chart.chartSettings.vertical}
           />
           <XAxis
-            dataKey='name'
+            dataKey="name"
             strokeWidth={2}
-            textAnchor='middle'
+            textAnchor="middle"
             tick={{
               fontSize: 12,
               fontWeight: "bold",
@@ -102,20 +107,15 @@ const DetailChart = ({ chart, animationActive = true }) => {
             ticks={monthLabels}
           />
           <YAxis
-            key={maxValue.toString()}
+            key={maxValue}
             strokeWidth={2}
             tick={{
               fontSize: 12,
               fontWeight: "bold",
             }}
-            domain={[0, Math.ceil((maxValue * 1.5) / 100) * 100]}
+            domain={[0, yAxisTicks[3]]}
             allowDataOverflow={false}
-            ticks={[
-              0,
-              Math.round((maxValue * 0.5) / 10) * 10,
-              Math.round((maxValue * 1) / 10) * 10,
-              Math.round((maxValue * 1.5) / 10) * 10,
-            ]}
+            ticks={yAxisTicks}
             interval={0}
             tickFormatter={formatters[chart.globalSettings.tooltipFormatter]}
           />
@@ -123,8 +123,8 @@ const DetailChart = ({ chart, animationActive = true }) => {
             content={({ payload, label }) => {
               if (payload && payload.length) {
                 return (
-                  <div className='bg-card rounded-lg border-neutral-500/30 p-4 border-[1px]'>
-                    <div className='text-sm font-bold'>
+                  <div className="rounded-lg border-[1px] border-neutral-500/30 bg-card p-4">
+                    <div className="text-sm font-bold">
                       {payload[0]?.payload.fullDate}
                     </div>
                     {payload.map((entry, index) => (
@@ -132,10 +132,10 @@ const DetailChart = ({ chart, animationActive = true }) => {
                         <span>{chart.globalSettings.lines[index].name}:</span>{" "}
                         <span
                           style={{ color: entry.color }}
-                          className='font-bold'
+                          className="font-bold"
                         >
                           {formatters[chart.globalSettings.tooltipFormatter](
-                            entry.value,
+                            entry.value
                           )}
                         </span>
                       </div>
@@ -161,7 +161,7 @@ const DetailChart = ({ chart, animationActive = true }) => {
               />
             ))}
           <Brush
-            dataKey='name'
+            dataKey="name"
             height={20}
             startIndex={brushIndices.startIndex}
             endIndex={brushIndices.endIndex}
@@ -169,16 +169,16 @@ const DetailChart = ({ chart, animationActive = true }) => {
               setBrushIndices({ startIndex, endIndex })
             }
             tickFormatter={() => ""}
-            fill='var(--base-100)'
+            fill="var(--base-100)"
             fillOpacity={0.3}
           >
             <AreaChart data={chart.data}>
               <CartesianGrid
-                strokeDasharray='3 3'
+                strokeDasharray="3 3"
                 vertical={false}
                 horizontal={false}
               />
-              <XAxis dataKey='name' hide />
+              <XAxis dataKey="name" hide />
               <YAxis hide />
               {chart.globalSettings.lines
                 .filter((line) => line.name !== null)
