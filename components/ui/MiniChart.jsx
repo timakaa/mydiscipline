@@ -36,8 +36,8 @@ const MiniChart = ({ chart, animationActive = true }) => {
         .filter((line) => line.name !== null)
         .map((line) => (
           <linearGradient
-            key={line.id}
-            id={`colorUv-${line.id}`}
+            key={`${chart.id}-${line.id}`}
+            id={`colorUv-${chart.id}-${line.id}`}
             x1="0"
             y1="0"
             x2="0"
@@ -47,7 +47,7 @@ const MiniChart = ({ chart, animationActive = true }) => {
             <stop offset="80%" stopColor={line.color} stopOpacity={0} />
           </linearGradient>
         )),
-    [chart.globalSettings.lines]
+    [chart.globalSettings.lines, chart.id]
   );
 
   return (
@@ -73,13 +73,13 @@ const MiniChart = ({ chart, animationActive = true }) => {
             .filter((line) => line.name !== null)
             .map((line) => (
               <Area
-                key={line.id}
+                key={`${chart.id}-${line.id}`}
                 type={chart.miniChartSettings.type}
                 dataKey={line.id}
                 stroke={line.color}
                 strokeWidth={3}
                 fillOpacity={1}
-                fill={`url(#colorUv-${line.id})`}
+                fill={`url(#colorUv-${chart.id}-${line.id})`}
                 isAnimationActive={animationActive}
               />
             ))}

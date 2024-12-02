@@ -19,27 +19,36 @@ const Charts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
 
-  useEffect(() => {
-    const fetchCharts = async () => {
-      try {
-        setIsLoading(true);
-        const { charts } = await getCharts();
-        setData(charts);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchCharts = async () => {
+    try {
+      setIsLoading(true);
+      const { charts } = await getCharts();
+      setData(charts);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCharts();
   }, []);
+
   return (
     <div>
-      {!details ? (
-        <CompactCharts charts={data} isLoading={isLoading} />
+      {(data && data.length) || isLoading ? (
+        !details ? (
+          <CompactCharts
+            charts={data}
+            isLoading={isLoading}
+            onOrderUpdate={fetchCharts}
+          />
+        ) : (
+          <FullscreenCharts charts={data} isLoading={isLoading} />
+        )
       ) : (
-        <FullscreenCharts charts={data} isLoading={isLoading} />
+        <div className="mt-20">No charts</div>
       )}
     </div>
   );

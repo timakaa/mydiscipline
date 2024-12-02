@@ -13,6 +13,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState, useEffect } from "react";
 import MiniChartSkeleton from "./ui/MiniChartSkeleton";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { updateChartsOrder } from "@/app/actions/chartActions";
 
 const SortableItem = ({ id, children, isOrderingEnabled }) => {
   const {
@@ -53,9 +54,10 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
   );
 };
 
-const CompactCharts = ({ charts, isLoading }) => {
+const CompactCharts = ({ charts, isLoading, onOrderUpdate }) => {
   const { changeOrder } = useChartsStore();
   const [chartItems, setChartItems] = useState([]);
+  const [isOrderingDisabled, setIsOrderingDisabled] = useState(false);
 
   useEffect(() => {
     if (charts) {
@@ -63,23 +65,45 @@ const CompactCharts = ({ charts, isLoading }) => {
     }
   }, [charts]);
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = async (event) => {
     const { active, over } = event;
 
-    if (!over || !changeOrder) return;
+    if (!over || !changeOrder || isOrderingDisabled) return;
 
     if (active.id !== over.id) {
-      setChartItems((items) => {
-        const oldIndex = items.indexOf(Number(active.id));
-        const newIndex = items.indexOf(Number(over.id));
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      setIsOrderingDisabled(true);
+
+      const newItems = [...chartItems];
+      const oldIndex = newItems.indexOf(Number(active.id));
+      const newIndex = newItems.indexOf(Number(over.id));
+      const reorderedItems = arrayMove(newItems, oldIndex, newIndex);
+
+      setChartItems(reorderedItems);
+
+      try {
+        const chartIdsInOrder = reorderedItems.map((index) => charts[index].id);
+        await updateChartsOrder(chartIdsInOrder);
+        await onOrderUpdate();
+
+        setTimeout(() => {
+          setIsOrderingDisabled(false);
+        }, 3000);
+      } catch (error) {
+        console.error("Failed to update order:", error);
+        setChartItems(chartItems);
+        setIsOrderingDisabled(false);
+      }
     }
   };
 
   const ChartBlock = ({ dataIndex }) => {
-    console.log(charts);
-    return <MiniChart chart={charts[dataIndex]} animationActive={false} />;
+    return (
+      <div
+        className={`transition-opacity duration-200 ${isOrderingDisabled ? "opacity-70 hover:opacity-100" : "opacity-100"}`}
+      >
+        <MiniChart chart={charts[dataIndex]} animationActive={false} />
+      </div>
+    );
   };
 
   return (
@@ -101,7 +125,7 @@ const CompactCharts = ({ charts, isLoading }) => {
                 <SortableItem
                   key={item}
                   id={item.toString()}
-                  isOrderingEnabled={changeOrder}
+                  isOrderingEnabled={changeOrder && !isOrderingDisabled}
                 >
                   <ChartBlock dataIndex={item} />
                 </SortableItem>
