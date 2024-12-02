@@ -4,7 +4,7 @@ import { DM_Sans } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "react-day-picker/style.css";
 
-export const DMSans = DM_Sans({
+const DMSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
