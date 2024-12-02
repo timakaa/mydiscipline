@@ -23,9 +23,24 @@ module.exports = {
           "25%": { transform: "rotate(-1deg)" },
           "75%": { transform: "rotate(1deg)" },
         },
+        gradient: {
+          "0%": {
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
+          },
+          "100%": {
+            backgroundPosition: "0% 50%",
+          },
+        },
       },
       animation: {
         shake: "shake 0.3s ease-in-out infinite",
+        gradient: "gradient 6s ease infinite alternate",
+      },
+      backgroundSize: {
+        "300%": "300%",
       },
     },
   },

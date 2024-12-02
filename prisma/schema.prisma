@@ -7,6 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Chart {
+  id                String   @id @default(cuid())
+  data              Json[]   @default([])
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  miniChartSettings Json
+  chartSettings     Json
+  globalSettings    Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("charts")
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -19,6 +33,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Chart     Chart[]
 
   @@map("users")
 }

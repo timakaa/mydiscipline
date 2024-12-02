@@ -1,30 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
 import { useChartsStore } from "@/store/charts.store";
-import { moneyChartData } from "@/mocks/data";
 import DetailChartSkeleton from "./ui/DetailChartSkeleton";
 import DetailChart from "./ui/DetailChart";
 
-const FullscreenCharts = () => {
+const FullscreenCharts = ({ charts, isLoading }) => {
   const { split } = useChartsStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const charts = useMemo(
-    () => [
-      moneyChartData(),
-      moneyChartData(),
-      moneyChartData(),
-      moneyChartData(),
-      moneyChartData(),
-    ],
-    []
-  );
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
 
   return (
     <>
@@ -38,21 +19,10 @@ const FullscreenCharts = () => {
             <DetailChart
               key={index}
               chart={{
-                data: chart,
-                globalSettings: {
-                  lines: [
-                    { id: "2", name: "Maximum", color: "#ff3737" },
-                    { id: "1", name: "Actual", color: "#3794FF" },
-                    { id: "3", name: null, color: "#379400" },
-                  ],
-                  title: "Chart",
-                  tooltipFormatter: "formatNone",
-                },
-                chartSettings: {
-                  horizontal: false,
-                  vertical: false,
-                  type: "monotone",
-                },
+                data: chart.data,
+                globalSettings: chart.globalSettings,
+                chartSettings: chart.chartSettings,
+                miniChartSettings: chart.miniChartSettings,
               }}
               animationActive={false}
             />

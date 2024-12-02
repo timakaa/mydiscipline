@@ -10,9 +10,12 @@ import {
   Brush,
 } from "recharts";
 import { formatters } from "@/lib/chartTooltipFormatters";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const DetailChart = ({ chart, animationActive = true }) => {
+  const router = useRouter();
   const marginLeft = useMemo(() => {
     switch (chart.globalSettings.tooltipFormatter) {
       case "formatDollar":
@@ -57,10 +60,20 @@ const DetailChart = ({ chart, animationActive = true }) => {
     ];
   }, [maxValue]);
 
+  console.log(chart);
+
   return (
     <div className="flex flex-col items-center rounded-xl border border-base-content/10 bg-card pt-6 shadow-sm duration-200 hover:drop-shadow-lg">
-      <div className="mb-4 text-center text-xl font-bold">
-        {chart.globalSettings.title}
+      <div className="mb-4 flex items-center gap-x-2">
+        <div className="text-center text-xl font-bold">
+          {chart.globalSettings.title}
+        </div>
+        <button
+          className="btn-simple btn p-3"
+          onClick={() => router.push(`/chart/edit/${chart.id}`)}
+        >
+          <Pencil size={16} />
+        </button>
       </div>
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart

@@ -11,9 +11,8 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState, useEffect } from "react";
-import { moneyChartData } from "@/mocks/data";
-import { restrictToParentElement } from "@dnd-kit/modifiers";
 import MiniChartSkeleton from "./ui/MiniChartSkeleton";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 const SortableItem = ({ id, children, isOrderingEnabled }) => {
   const {
@@ -54,20 +53,15 @@ const SortableItem = ({ id, children, isOrderingEnabled }) => {
   );
 };
 
-const CompactCharts = () => {
+const CompactCharts = ({ charts, isLoading }) => {
   const { changeOrder } = useChartsStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const [chartItems, setChartItems] = useState([0, 1, 2, 3, 4, 5, 6, 7]);
+  const [chartItems, setChartItems] = useState([]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
-
-  const chartsData = useMemo(() => {
-    return chartItems.map(() => moneyChartData());
-  }, []);
+    if (charts) {
+      setChartItems(charts.map((_, index) => index));
+    }
+  }, [charts]);
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -83,25 +77,10 @@ const CompactCharts = () => {
     }
   };
 
-  const ChartBlock = ({ dataIndex }) => (
-    <MiniChart
-      chart={{
-        data: chartsData[dataIndex],
-        globalSettings: {
-          title: "Test",
-          lines: [
-            { id: "2", name: "Maximum", color: "#ff3737" },
-            { id: "1", name: "Actual", color: "#3794FF" },
-            { id: "3", name: null, color: "#379400" },
-          ],
-        },
-        miniChartSettings: {
-          type: "monotone",
-        },
-      }}
-      animationActive={false}
-    />
-  );
+  const ChartBlock = ({ dataIndex }) => {
+    console.log(charts);
+    return <MiniChart chart={charts[dataIndex]} animationActive={false} />;
+  };
 
   return (
     <div className="mt-20">
