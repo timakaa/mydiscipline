@@ -5,6 +5,9 @@ import Email from "next-auth/providers/email";
 import prisma from "./lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages: {
+    signIn: "/login",
+  },
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   ...(process.env.NODE_ENV === "production"

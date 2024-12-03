@@ -5,19 +5,19 @@ import SwitchTheme from "./ui/SwitchTheme";
 
 const Header = () => {
   return (
-    <div className='border-b border-base-content/10'>
-      <header className='mx-auto max-w-6xl flex justify-between items-center pt-4 pb-4 px-4 md:px-8'>
+    <div className="border-b border-base-content/10">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 pb-4 pt-4 md:px-8">
         <div>
           <Link
-            href='/'
-            className='flex gap-x-1 text-[1.25rem] font-[700] items-center select-none'
+            href="/"
+            className="flex select-none items-center gap-x-1 text-[1.25rem] font-[700]"
           >
-            <InfiniteLogo className='text-amber-600 text-2xl' />
+            <InfiniteLogo className="text-2xl text-amber-600" />
             <div>MyDiscipline</div>
           </Link>
         </div>
         <div>
-          <div className='flex gap-x-2'>
+          <div className="flex gap-x-2">
             <SwitchTheme />
             <UserMenu />
           </div>

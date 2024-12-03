@@ -19,9 +19,15 @@ module.exports = {
       },
       keyframes: {
         shake: {
-          "0%, 100%": { transform: "rotate(0deg)" },
-          "25%": { transform: "rotate(-1deg)" },
-          "75%": { transform: "rotate(1deg)" },
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+          },
+          "25%": {
+            transform: "rotate(-1deg)",
+          },
+          "75%": {
+            transform: "rotate(1deg)",
+          },
         },
         gradient: {
           "0%": {
@@ -70,5 +76,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-animate")],
 };

@@ -5,9 +5,8 @@ import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickAway } from "../hooks/useClickAway";
 import Image from "next/image";
-import { LogOut, Settings } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { InfiniteLogo } from "./ui/InfiniteLogo";
 
 const UserMenu = () => {
@@ -16,37 +15,35 @@ const UserMenu = () => {
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const pathname = usePathname();
-
   useClickAway({ func: () => setIsOpen(false), refs: [menuRef, buttonRef] });
 
   if (status === "loading")
     return (
-      <div className='flex items-center gap-x-2'>
-        <div className='animate-pulse bg-base-300 w-8 h-8 rounded-full'></div>
-        <div className='animate-pulse bg-base-300 w-20 h-4 rounded-md'></div>
+      <div className="flex items-center gap-x-2">
+        <div className="h-8 w-8 animate-pulse rounded-full bg-base-300"></div>
+        <div className="h-4 w-20 animate-pulse rounded-md bg-base-300"></div>
       </div>
     );
 
   return (
     <div>
       {session?.user ? (
-        <div className='relative'>
+        <div className="relative">
           <button
             ref={buttonRef}
             onClick={() => setIsOpen((prev) => !prev)}
-            className='btn btn-ghost py-1 px-4 flex gap-x-2 items-center'
+            className="btn btn-ghost flex items-center gap-x-2 px-4 py-1"
           >
             <Image
               src={session?.user?.image || "/default-user-avatar.jpg"}
-              alt='user'
+              alt="user"
               width={24}
               height={24}
-              className='rounded-full'
+              className="rounded-full"
             />
             {session?.user?.name || "Account"}
           </button>
-          <AnimatePresence mode='wait'>
+          <AnimatePresence mode="wait">
             {isOpen ? (
               <motion.div
                 ref={menuRef}
@@ -54,28 +51,28 @@ const UserMenu = () => {
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0.3, y: -3, x: 3 }}
                 transition={{ duration: 0.05, ease: "easeIn" }}
-                className='relative z-50'
+                className="relative z-50"
               >
-                <div className='absolute right-0 z-50 mt-3 w-screen max-w-[12rem] transform select-none'>
-                  <div className='overflow-hidden rounded-xl border border-base-content/10 bg-base-100 text-sm shadow-xl'>
-                    <div className='p-1 flex flex-col gap-y-1'>
+                <div className="absolute right-0 z-50 mt-3 w-screen max-w-[12rem] transform select-none">
+                  <div className="overflow-hidden rounded-xl border border-base-content/10 bg-base-100 text-sm shadow-xl">
+                    <div className="flex flex-col gap-y-1 p-1">
                       <Link
-                        href='/discipline'
+                        href="/discipline"
                         onClick={() => setIsOpen(false)}
-                        className='btn btn-ghost btn-sm w-full flex justify-start py-2'
+                        className="btn btn-ghost btn-sm flex w-full justify-start py-2"
                       >
-                        <InfiniteLogo className='text-amber-600 text-xl' />
-                        <div className='text-xs'>Discipline</div>
+                        <InfiniteLogo className="text-xl text-amber-600" />
+                        <div className="text-xs">Discipline</div>
                       </Link>
                       <button
                         onClick={async () => {
                           setIsOpen(false);
                           await signOut();
                         }}
-                        className='btn btn-ghost btn-sm w-full flex justify-start hover:bg-red-600/40 hover:text-red-500 py-2'
+                        className="btn btn-ghost btn-sm flex w-full justify-start py-2 hover:bg-red-600/40 hover:text-red-500"
                       >
                         <LogOut size={16} />
-                        <div className='text-xs'>Logout</div>
+                        <div className="text-xs">Logout</div>
                       </button>
                     </div>
                   </div>
@@ -87,12 +84,9 @@ const UserMenu = () => {
           </AnimatePresence>
         </div>
       ) : (
-        <button
-          onClick={() => signIn()}
-          className='btn btn-simple btn-ghost py-2'
-        >
+        <Link href="/login" className="btn-simple btn py-2">
           Login
-        </button>
+        </Link>
       )}
     </div>
   );
