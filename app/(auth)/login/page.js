@@ -2,6 +2,7 @@
 
 import { LoginForm } from "@/components/ui/login-form";
 import SwitchTheme from "@/components/ui/SwitchTheme";
+import { Suspense } from "react";
 
 export default function Login() {
   return (
@@ -11,7 +12,9 @@ export default function Login() {
       </div>
       <div className="grid h-screen grid-cols-2 place-items-center">
         <div></div>
-        <LoginForm />
+        <Suspense fallback={<></>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
