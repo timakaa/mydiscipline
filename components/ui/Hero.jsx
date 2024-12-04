@@ -9,7 +9,7 @@ const Hero = async () => {
     <div className="mt-20 grid place-items-center">
       <div>
         <h1 className="block text-6xl font-bold">
-          <span className="bg-300% animate-gradient inline bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 bg-clip-text font-bold text-transparent selection:bg-amber-100 selection:text-amber-600">
+          <span className="inline animate-gradient bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 bg-300% bg-clip-text font-bold text-transparent selection:bg-amber-100 selection:text-amber-600">
             Be honest
           </span>{" "}
           with yourself
@@ -47,12 +47,6 @@ const Hero = async () => {
               </span>
               <span className="text-neutral-500">Visualization</span>
             </li>
-            <li className="flex items-center gap-x-3 text-lg">
-              <span className="text-amber-600">
-                <CheckIcon />
-              </span>
-              <span className="text-neutral-500">Pay with crypto</span>
-            </li>
           </ul>
           <div className="flex justify-center">
             <Link
@@ -61,9 +55,6 @@ const Hero = async () => {
             >
               Do your duty without excuses
             </Link>
-          </div>
-          <div className="mt-1 text-center text-sm tracking-wide text-neutral-500">
-            7-day free trial
           </div>
         </div>
       </div>

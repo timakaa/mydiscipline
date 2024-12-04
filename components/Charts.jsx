@@ -35,6 +35,8 @@ const Charts = () => {
     fetchCharts();
   }, []);
 
+  console.log(data);
+
   return (
     <div>
       {(data && data.length) || isLoading ? (
@@ -48,7 +50,7 @@ const Charts = () => {
           <FullscreenCharts charts={data} isLoading={isLoading} />
         )
       ) : (
-        <div className="mt-20">No charts</div>
+        <div className="mt-20 text-center text-xl font-bold">No charts</div>
       )}
     </div>
   );

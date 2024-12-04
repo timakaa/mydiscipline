@@ -8,6 +8,8 @@ export async function createChart({
   globalSettings,
   miniChartSettings,
   chartSettings,
+  fromDate,
+  toDate,
 }) {
   try {
     const session = await getSession();
@@ -32,6 +34,8 @@ export async function createChart({
         miniChartSettings: miniChartSettings,
         chartSettings: chartSettings,
         userId: session.user.id,
+        fromDate: fromDate ? new Date(fromDate) : null,
+        toDate: toDate ? new Date(toDate) : null,
       },
     });
 
@@ -81,6 +85,71 @@ export async function updateChartsOrder(chartIds) {
     );
 
     return { success: true };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getChartById(id) {
+  try {
+    const session = await getSession();
+
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const chart = await prisma.chart.findUnique({
+      where: { id, userId: session.user.id },
+    });
+
+    if (!chart) {
+      throw new Error("Chart not found");
+    }
+
+    return { chart };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function changeChart({ id, chart }) {
+  try {
+    const session = await getSession();
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const updatedChart = await prisma.chart.update({
+      where: { id, userId: session.user.id },
+      data: chart,
+    });
+
+    if (!updatedChart) {
+      throw new Error("Chart not found");
+    }
+
+    return { updatedChart };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteChart(id) {
+  try {
+    const session = await getSession();
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const deletedChart = await prisma.chart.delete({
+      where: { id, userId: session.user.id },
+    });
+
+    if (!deletedChart) {
+      throw new Error("Chart not found");
+    }
+
+    return { deletedChart };
   } catch (error) {
     throw new Error(error.message);
   }

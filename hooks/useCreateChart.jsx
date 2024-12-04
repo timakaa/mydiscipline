@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import { moneyChartData } from "@/mocks/data";
+import {
+  handleLineChange as handleLineChangeUtils,
+  handleLineAdd as handleLineAddUtils,
+  handleLineColorChange as handleLineColorChangeUtils,
+  handleLineRemove as handleLineRemoveUtils,
+  handleTooltipFormatterChange as handleTooltipFormatterChangeUtils,
+} from "@/lib/chartUtils";
 
 export default function useCreateChart() {
   const [lineKeys] = useState({
@@ -9,6 +16,16 @@ export default function useCreateChart() {
     2: "max",
     3: "custom",
   });
+
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(
+    (() => {
+      const date = new Date();
+      date.setFullYear(date.getFullYear() + 1);
+      date.setDate(date.getDate() - 1);
+      return date;
+    })()
+  );
 
   const [data, setData] = useState(() => moneyChartData());
   const [globalSettings, setGlobalSettings] = useState({
@@ -29,73 +46,20 @@ export default function useCreateChart() {
     type: "linear",
   });
 
-  const handleLineChange = (e, index) => {
-    setGlobalSettings((prev) => ({
-      ...prev,
-      lines: prev.lines.map((line, i) => {
-        if (i === index) {
-          return { ...line, name: e.target.value };
-        }
-        return line;
-      }),
-    }));
-  };
+  const handleLineChange = (e, index) =>
+    handleLineChangeUtils(e, index, setGlobalSettings);
 
-  const handleTooltipFormatterChange = (e) => {
-    setGlobalSettings((prev) => ({
-      ...prev,
-      tooltipFormatter: e.target.value,
-    }));
-  };
+  const handleTooltipFormatterChange = (e) =>
+    handleTooltipFormatterChangeUtils(e, setGlobalSettings);
 
-  const handleLineColorChange = (e, index) => {
-    const lineToChange = globalSettings.lines[index];
+  const handleLineColorChange = (e, index) =>
+    handleLineColorChangeUtils(e, index, globalSettings, setGlobalSettings);
 
-    setGlobalSettings((prev) => ({
-      ...prev,
-      lines: prev.lines.map((line, i) =>
-        line.id === lineToChange.id ? { ...line, color: e.target.value } : line,
-      ),
-    }));
-  };
+  const handleLineRemove = (index) =>
+    handleLineRemoveUtils(index, globalSettings, setData, setGlobalSettings);
 
-  const handleLineRemove = (index) => {
-    const lineToRemove = globalSettings.lines[index];
-
-    setData((prevData) =>
-      prevData.map(({ [lineToRemove.id]: removed, ...rest }) => rest),
-    );
-
-    setGlobalSettings((prev) => ({
-      ...prev,
-      lines: prev.lines.map((line) =>
-        line.id === lineToRemove.id ? { ...line, name: null } : line,
-      ),
-    }));
-  };
-
-  const handleLineAdd = () => {
-    const hiddenLine = globalSettings.lines.find((line) => line.name === null);
-    if (
-      !hiddenLine ||
-      globalSettings.lines.filter((line) => line.name).length >= 3
-    )
-      return;
-
-    setData((prevData) =>
-      prevData.map((item) => ({
-        ...item,
-        [hiddenLine.id]: null,
-      })),
-    );
-
-    setGlobalSettings((prev) => ({
-      ...prev,
-      lines: prev.lines.map((line) =>
-        line.id === hiddenLine.id ? { ...line, name: "New line" } : line,
-      ),
-    }));
-  };
+  const handleLineAdd = () =>
+    handleLineAddUtils(globalSettings, setData, setGlobalSettings);
 
   return {
     globalSettings,
@@ -112,5 +76,9 @@ export default function useCreateChart() {
     data,
     setData,
     lineKeys,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
   };
 }

@@ -19,6 +19,7 @@ const FullscreenCharts = ({ charts, isLoading }) => {
             <DetailChart
               key={index}
               chart={{
+                id: chart.id,
                 data: chart.data,
                 globalSettings: chart.globalSettings,
                 chartSettings: chart.chartSettings,

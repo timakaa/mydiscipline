@@ -27,6 +27,10 @@ const CreateChartForm = () => {
     handleTooltipFormatterChange,
     data,
     setData,
+    fromDate,
+    toDate,
+    setFromDate,
+    setToDate,
   } = useCreateChart();
 
   const handleSubmit = async (e) => {
@@ -37,6 +41,8 @@ const CreateChartForm = () => {
         globalSettings,
         chartSettings,
         miniChartSettings,
+        fromDate,
+        toDate,
       });
       console.log(chart);
       router.push(`/discipline`);
@@ -86,6 +92,10 @@ const CreateChartForm = () => {
           setData={setData}
           data={data}
           globalSettings={globalSettings}
+          fromDate={fromDate}
+          toDate={toDate}
+          setFromDate={setFromDate}
+          setToDate={setToDate}
         />
         <div className="lg:justify-self-end">
           <GlobalChartSettings

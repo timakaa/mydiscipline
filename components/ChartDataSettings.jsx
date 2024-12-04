@@ -7,19 +7,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useClickAway } from "../hooks/useClickAway";
 import PickDataInterval from "./PickDataInterval";
 
-const ChartDataSettings = ({ setData, globalSettings, data }) => {
+const ChartDataSettings = ({
+  setData,
+  globalSettings,
+  data,
+  fromDate,
+  toDate,
+  setFromDate,
+  setToDate,
+  autoPickDate = false,
+}) => {
   const [date, setDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(
-    (() => {
-      const date = new Date();
-      date.setFullYear(date.getFullYear() + 1);
-      date.setDate(date.getDate() - 1);
-      return date;
-    })(),
+  const [isPicked, setIsPicked] = useState(
+    autoPickDate ? toDate && fromDate : false
   );
-  const [isPicked, setIsPicked] = useState(false);
 
   const containerRef = useRef(null);
   const buttonRef = useRef(null);
@@ -33,10 +35,10 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
 
   return (
     <div>
-      <div className='text-xl font-bold mb-4'>Data Settings</div>
-      <div className='flex flex-col gap-y-4'>
+      <div className="mb-4 text-xl font-bold">Data Settings</div>
+      <div className="flex flex-col gap-y-4">
         {isPicked ? (
-          <div className='relative'>
+          <div className="relative">
             <div>
               <div>
                 <button
@@ -51,7 +53,7 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
                   )}
                 </button>
               </div>
-              <AnimatePresence mode='wait'>
+              <AnimatePresence mode="wait">
                 {isOpen ? (
                   <motion.div
                     ref={containerRef}
@@ -59,17 +61,17 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.1 }}
-                    className='absolute top-12 left-0 bg-base-200 border max-w-full border-base-content/10 rounded-xl'
+                    className="absolute left-0 top-12 max-w-full rounded-xl border border-base-content/10 bg-base-200"
                   >
                     <DayPicker
-                      mode='single'
+                      mode="single"
                       selected={date}
                       onSelect={(date) => {
                         setDate(date);
                         setIsOpen(false);
                       }}
                       defaultMonth={date || fromDate}
-                      captionLayout='dropdown'
+                      captionLayout="dropdown"
                       weekStartsOn={1}
                       disabled={{
                         before: fromDate,
@@ -77,7 +79,7 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
                       }}
                       fromYear={fromDate.getFullYear()}
                       toYear={toDate.getFullYear()}
-                      className='bg-base-200 rounded-xl p-4'
+                      className="rounded-xl bg-base-200 p-4"
                       classNames={{
                         today: "text-amber-700",
                         selected: `bg-amber-500 text-white rounded-full`,
@@ -90,20 +92,20 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
                 )}
               </AnimatePresence>
             </div>
-            <div className='mt-6 flex flex-col gap-y-4'>
+            <div className="mt-6 flex flex-col gap-y-4">
               {date &&
                 globalSettings.lines.map(
                   (line) =>
                     line.name && (
                       <div
                         key={line.name}
-                        className='flex items-center gap-x-2'
+                        className="flex items-center gap-x-2"
                       >
                         <span>{line.name}</span>
                         <input
                           maxLength={7}
-                          type='text'
-                          className='input input-bordered'
+                          type="text"
+                          className="input input-bordered"
                           value={(() => {
                             const day = data.find((day) => {
                               const dayDate = new Date(day.dateValue);
@@ -132,17 +134,17 @@ const ChartDataSettings = ({ setData, globalSettings, data }) => {
                                   };
                                 }
                                 return day;
-                              }),
+                              })
                             );
                           }}
                         />
                       </div>
-                    ),
+                    )
                 )}
             </div>
           </div>
         ) : (
-          <div className='mt-10'>
+          <div className="mt-10">
             <PickDataInterval
               fromDate={fromDate}
               setFromDate={setFromDate}

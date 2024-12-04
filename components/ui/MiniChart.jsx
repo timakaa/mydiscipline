@@ -8,8 +8,10 @@ import {
   YAxis,
 } from "recharts";
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 const MiniChart = ({ chart, animationActive = true }) => {
+  const router = useRouter();
   const { trimmedData, maxValue } = useMemo(() => {
     const lastIndex = chart.data.reduce((lastIndex, item, index) => {
       const hasValue = chart.globalSettings.lines.some(
@@ -52,6 +54,7 @@ const MiniChart = ({ chart, animationActive = true }) => {
 
   return (
     <div
+      onClick={() => router.push(`/chart/edit/${chart.id}`)}
       className={`mx-auto rounded-xl border border-base-content/10 bg-card p-4 duration-200 hover:drop-shadow-lg`}
     >
       <div className="text-base font-bold">{chart.globalSettings.title}</div>
