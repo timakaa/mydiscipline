@@ -8,9 +8,10 @@ import MiniChart from "./ui/MiniChart";
 import DetailChartSettings from "./DetailChartSettings";
 import MiniChartSettings from "./MiniChartSettings";
 import ChartDataSettings from "./ChartDataSettings";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import GlobalChartSettings from "./GlobalChartSettings";
+import DeleteChartModal from "./ui/DeleteChartModal";
 
 import {
   handleLineChange as handleLineChangeUtils,
@@ -91,15 +92,18 @@ const EditChartForm = ({ id }) => {
         <EditChartSkeleton />
       ) : globalSettings ? (
         <>
-          <button
-            onClick={() => router.push("/discipline")}
-            className="btn-simple group btn mb-4 flex items-center gap-x-1 py-2"
-          >
-            <span className="transition-transform group-hover:-translate-x-1">
-              <ArrowLeft size={16} />
-            </span>
-            <span>Back</span>
-          </button>
+          <div className="mb-4 flex items-center justify-between">
+            <button
+              onClick={() => router.push("/discipline")}
+              className="btn-simple group btn flex items-center gap-x-1 py-2"
+            >
+              <span className="transition-transform group-hover:-translate-x-1">
+                <ArrowLeft size={16} />
+              </span>
+              <span>Back</span>
+            </button>
+            <DeleteChartModal id={id} />
+          </div>
           <div className="mb-4">
             <DetailChart
               chart={{

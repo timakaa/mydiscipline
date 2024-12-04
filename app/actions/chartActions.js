@@ -134,7 +134,7 @@ export async function changeChart({ id, chart }) {
   }
 }
 
-export async function deleteChart(id) {
+export async function deleteChartById(id) {
   try {
     const session = await getSession();
     if (!session?.user) {

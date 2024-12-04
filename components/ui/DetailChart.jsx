@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { formatters } from "@/lib/chartTooltipFormatters";
 import { useState, useMemo } from "react";
-import { Pencil } from "lucide-react";
+import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const DetailChart = ({ chart, animationActive = true }) => {
@@ -71,7 +71,7 @@ const DetailChart = ({ chart, animationActive = true }) => {
             className="btn-simple btn p-3"
             onClick={() => router.push(`/chart/edit/${chart.id}`)}
           >
-            <Pencil size={16} />
+            <Eye size={16} />
           </button>
         )}
       </div>
