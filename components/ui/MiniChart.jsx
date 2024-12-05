@@ -9,8 +9,9 @@ import {
 } from "recharts";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-
+import { useChartsStore } from "@/store/charts.store";
 const MiniChart = ({ chart, animationActive = true }) => {
+  const { changeOrder } = useChartsStore();
   const router = useRouter();
   const { trimmedData, maxValue } = useMemo(() => {
     const lastIndex = chart.data.reduce((lastIndex, item, index) => {
@@ -54,7 +55,12 @@ const MiniChart = ({ chart, animationActive = true }) => {
 
   return (
     <div
-      onClick={() => router.push(`/chart/edit/${chart.id}`)}
+      onClick={() => {
+        if (!chart.id) return;
+        if (changeOrder) return;
+
+        router.push(`/chart/edit/${chart.id}`);
+      }}
       className={`mx-auto rounded-xl border border-base-content/10 bg-card p-4 duration-200 hover:drop-shadow-lg`}
     >
       <div className="text-base font-bold">{chart.globalSettings.title}</div>

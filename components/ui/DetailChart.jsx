@@ -60,6 +60,26 @@ const DetailChart = ({ chart, animationActive = true }) => {
     ];
   }, [maxValue]);
 
+  const gradientDefs = useMemo(
+    () =>
+      chart.globalSettings.lines
+        .filter((line) => line.name !== null)
+        .map((line) => (
+          <linearGradient
+            key={`${chart.id}-${line.id}`}
+            id={`colorUv-${chart.id}-${line.id}`}
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stopColor={line.color} stopOpacity={0.3} />
+            <stop offset="80%" stopColor={line.color} stopOpacity={0} />
+          </linearGradient>
+        )),
+    [chart.globalSettings.lines, chart.id]
+  );
+
   return (
     <div className="flex flex-col items-center rounded-xl border border-base-content/10 bg-card pt-6 shadow-sm duration-200 hover:drop-shadow-lg">
       <div className="mb-4 flex items-center gap-x-2">
@@ -85,23 +105,7 @@ const DetailChart = ({ chart, animationActive = true }) => {
             bottom: 50,
           }}
         >
-          <defs>
-            {chart.globalSettings.lines
-              .filter((line) => line.name !== null)
-              .map((line, index) => (
-                <linearGradient
-                  key={index}
-                  id={`colorUv${index + 1}`}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0%" stopColor={line.color} stopOpacity={0.3} />
-                  <stop offset="80%" stopColor={line.color} stopOpacity={0} />
-                </linearGradient>
-              ))}
-          </defs>
+          <defs>{gradientDefs}</defs>
           <CartesianGrid
             strokeDasharray="3 3"
             strokeWidth={2}
@@ -140,19 +144,26 @@ const DetailChart = ({ chart, animationActive = true }) => {
                     <div className="text-sm font-bold">
                       {payload[0]?.payload.fullDate}
                     </div>
-                    {payload.map((entry, index) => (
-                      <div key={index}>
-                        <span>{chart.globalSettings.lines[index].name}:</span>{" "}
-                        <span
-                          style={{ color: entry.color }}
-                          className="font-bold"
-                        >
-                          {formatters[chart.globalSettings.tooltipFormatter](
-                            entry.value
-                          )}
-                        </span>
-                      </div>
-                    ))}
+                    {chart.globalSettings.lines
+                      .filter((line) => line.name !== null)
+                      .map((line, index) => {
+                        const value = payload[index]?.value;
+                        if (value === undefined) return null;
+
+                        return (
+                          <div key={index}>
+                            <span>{line.name}:</span>{" "}
+                            <span
+                              style={{ color: line.color }}
+                              className="font-bold"
+                            >
+                              {formatters[
+                                chart.globalSettings.tooltipFormatter
+                              ](value)}
+                            </span>
+                          </div>
+                        );
+                      })}
                   </div>
                 );
               }
@@ -169,7 +180,7 @@ const DetailChart = ({ chart, animationActive = true }) => {
                 stroke={line.color}
                 strokeWidth={3}
                 fillOpacity={1}
-                fill={`url(#colorUv${index + 1})`}
+                fill={`url(#colorUv-${chart.id}-${line.id})`}
                 isAnimationActive={animationActive}
               />
             ))}
@@ -203,7 +214,7 @@ const DetailChart = ({ chart, animationActive = true }) => {
                     stroke={line.color}
                     strokeWidth={1}
                     fillOpacity={1}
-                    fill={`url(#colorUv${index + 1})`}
+                    fill={`url(#colorUv-${chart.id}-${line.id})`}
                     isAnimationActive={animationActive}
                   />
                 ))}

@@ -37,14 +37,6 @@ const Hero = async () => {
               <span className="text-amber-600">
                 <CheckIcon />
               </span>
-              <span className="text-neutral-500">
-                Create charts of your goals
-              </span>
-            </li>
-            <li className="flex items-center gap-x-3 text-lg">
-              <span className="text-amber-600">
-                <CheckIcon />
-              </span>
               <span className="text-neutral-500">Visualization</span>
             </li>
           </ul>
