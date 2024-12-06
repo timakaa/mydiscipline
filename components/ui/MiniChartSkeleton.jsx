@@ -1,6 +1,6 @@
 const MiniChartSkeleton = () => {
   return (
-    <div className="relative grid w-full grid-cols-3 place-items-center gap-4">
+    <div className="relative grid w-full grid-cols-2 place-items-center gap-4 md:grid-cols-3">
       <div
         className={`mx-auto w-full rounded-xl border border-base-content/10 bg-card p-4 duration-200 hover:drop-shadow-lg`}
       >

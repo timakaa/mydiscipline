@@ -120,7 +120,7 @@ const CompactCharts = ({ charts, isLoading, onOrderUpdate }) => {
             items={chartItems.map(String)}
             strategy={rectSortingStrategy}
           >
-            <div className="relative grid w-full grid-cols-3 place-items-center gap-4">
+            <div className="relative grid w-full grid-cols-2 place-items-center gap-4 md:grid-cols-3">
               {chartItems.map((item) => (
                 <SortableItem
                   key={item}

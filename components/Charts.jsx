@@ -35,8 +35,6 @@ const Charts = () => {
     fetchCharts();
   }, []);
 
-  console.log(data);
-
   return (
     <div>
       {(data && data.length) || isLoading ? (

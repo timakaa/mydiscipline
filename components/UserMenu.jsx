@@ -32,7 +32,7 @@ const UserMenu = () => {
           <button
             ref={buttonRef}
             onClick={() => setIsOpen((prev) => !prev)}
-            className="btn btn-ghost flex items-center gap-x-2 px-4 py-1"
+            className="btn btn-ghost flex items-center gap-x-2 px-2 py-1 md:px-4"
           >
             <Image
               src={session?.user?.image || "/default-user-avatar.jpg"}

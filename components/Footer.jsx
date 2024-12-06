@@ -7,10 +7,10 @@ import { useSession } from "next-auth/react";
 const Footer = () => {
   const { data: session } = useSession();
   return (
-    <footer className="border-t border-base-content/10 py-20">
+    <footer className="border-t border-base-content/10 px-4 py-20">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-wrap justify-center lg:flex-nowrap">
-          <div className="mr-32 flex flex-col gap-y-2">
+        <div className="flex flex-wrap justify-center gap-20 lg:flex-nowrap">
+          <div className="flex flex-col gap-y-2">
             <div className="flex select-none items-center gap-x-1 text-lg font-[700]">
               <InfiniteLogo className="text-xl text-amber-600" />
               <div>MyDiscipline</div>
@@ -32,7 +32,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="mr-32 flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2">
             <div className="text-lg font-semibold text-neutral-500">
               Watch me grow
             </div>
@@ -67,7 +67,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="mr-32 flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2">
             <div className="text-lg font-semibold text-neutral-500">Links</div>
             <div className="flex flex-col gap-y-1">
               <div>

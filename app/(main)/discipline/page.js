@@ -11,9 +11,9 @@ const Discipline = async () => {
   }
 
   return (
-    <div className='mx-auto max-w-6xl px-4 md:px-8 py-12'>
-      <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold'>Discipline</h1>
+    <div className="mx-auto max-w-6xl px-4 py-12 md:px-8">
+      <div className="flex items-center justify-between">
+        <h1 className="hidden text-2xl font-bold md:block">Discipline</h1>
         <DisciplineSettings />
       </div>
       <div>

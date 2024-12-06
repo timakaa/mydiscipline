@@ -24,7 +24,7 @@ const SwitchTheme = () => {
 
       {/* sun icon */}
       <svg
-        className="swap-on h-6 w-6 fill-current"
+        className="swap-on h-5 w-5 fill-current md:h-6 md:w-6"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -33,7 +33,7 @@ const SwitchTheme = () => {
 
       {/* moon icon */}
       <svg
-        className="swap-off h-6 w-6 fill-current"
+        className="swap-off h-5 w-5 fill-current md:h-6 md:w-6"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >

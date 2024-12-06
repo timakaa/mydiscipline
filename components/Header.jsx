@@ -10,9 +10,9 @@ const Header = () => {
         <div>
           <Link
             href="/"
-            className="flex select-none items-center gap-x-1 text-[1.25rem] font-[700]"
+            className="flex select-none items-center gap-x-1 text-sm font-[700] md:text-[1.25rem]"
           >
-            <InfiniteLogo className="text-2xl text-amber-600" />
+            <InfiniteLogo className="text-xl text-amber-600 md:text-2xl" />
             <div>MyDiscipline</div>
           </Link>
         </div>

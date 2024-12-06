@@ -7,14 +7,13 @@ export default function Home() {
   return (
     <div className="mx-auto flex max-w-6xl flex-col items-center justify-between px-4 pb-4 pt-4 md:px-8">
       <Hero />
-      <div className="relative mt-20 h-[800px] w-full">
-        <Image
-          src="/example.png"
-          className="rounded-xl border border-neutral-200 object-cover"
-          alt="chart"
-          fill
-        />
-      </div>
+      <Image
+        src="/example.png"
+        className="mt-20 w-full rounded-xl border border-neutral-200 object-cover"
+        alt="chart"
+        height={1000}
+        width={1000}
+      />
       <div className="mt-40">
         <div className="flex items-center justify-center gap-x-0.5">
           <Star fill="currentColor" className="size-6 text-amber-600" />
@@ -46,7 +45,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="mx-auto my-40 w-screen max-w-xl">
+      <div className="mx-auto my-40 w-full max-w-xl">
         <h2 className="mb-2 text-3xl font-bold">FAQ</h2>
         <FAQ />
       </div>
