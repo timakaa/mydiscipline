@@ -10,7 +10,7 @@ export default function FAQ() {
     <Accordion type="single" collapsible className="relative w-full max-w-full">
       <AccordionItem value="item-1">
         <AccordionTrigger>Is it free?</AccordionTrigger>
-        <AccordionContent>Yes. It's free.</AccordionContent>
+        <AccordionContent>Yes. It&apos;s free.</AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger>Why do I need this?</AccordionTrigger>
